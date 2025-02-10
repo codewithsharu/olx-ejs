@@ -1,0 +1,102 @@
+<!-- views/addProduct.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; }
+        .container { max-width: 600px; margin-top: 50px; }
+        .form-group { margin-bottom: 15px; }
+        .btn-primary { background-color: #007bff; border-color: #007bff; }
+        .btn-primary:hover { background-color: #0056b3; border-color: #004085; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 class="text-center mb-4">Add New Product</h2>
+    <form id="productForm" action="/products" method="POST">
+        <div class="form-group">
+            <label for="id">Product ID:</label>
+            <input type="text" class="form-control" id="id" name="id" value="<%= productId %>" readonly>
+        </div>
+
+        <div class="form-group">
+            <label for="name">Product Name:</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="image1">Image URL 1:</label>
+            <input type="url" class="form-control" id="image1" name="images" required>
+        </div>
+
+        <div class="form-group">
+            <label for="image2">Image URL 2:</label>
+            <input type="url" class="form-control" id="image2" name="images" required>
+        </div>
+
+        <div class="form-group">
+            <label for="image3">Image URL 3:</label>
+            <input type="url" class="form-control" id="image3" name="images" required>
+        </div>
+
+        <div class="form-group">
+            <label for="image4">Image URL 4:</label>
+            <input type="url" class="form-control" id="image4" name="images" required>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Price:</label>
+            <input type="number" class="form-control" id="price" name="price" required>
+        </div>
+
+        <div class="form-group">
+            <label for="mrp">MRP:</label>
+            <input type="number" class="form-control" id="mrp" name="mrp" required>
+        </div>
+
+        <div class="form-group">
+            <label for="category">Category:</label>
+            <input type="text" class="form-control" id="category" name="category" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="stock">Stock:</label>
+            <input type="number" class="form-control" id="stock" name="stock" required>
+        </div>
+
+        <div class="form-group">
+            <label for="status">Status:</label>
+            <input type="text" class="form-control" id="status" name="status" required>
+        </div>
+
+        <div class="form-group">
+            <label for="payment">Payment Method:</label>
+            <input type="text" class="form-control" id="payment" name="payment" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Add Product</button>
+    </form>
+</div>
+
+<script>
+    // Generate a random product ID starting with "PRO"
+    function generateProductId() {
+        const randomNum = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
+        return `PRO${String(randomNum).padStart(3, '0')}`; // Format as PRO001, PRO002, etc.
+    }
+
+    document.getElementById('id').value = generateProductId();
+</script>
+
+</body>
+</html>

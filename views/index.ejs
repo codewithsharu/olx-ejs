@@ -1,0 +1,970 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Products</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            background-color: #e9ecef; /* Softer background color */
+            font-family: 'Arial', sans-serif; /* Change to a cleaner font */
+        }
+
+        .header-section {
+            background: linear-gradient(45deg, #007bff, #0056b3); /* Updated gradient */
+            padding: 30px 0;
+            margin-bottom: 30px;
+        }
+
+        .header-section h1 {
+            color: white;
+            margin: 0;
+            font-size: 3rem; /* Increased font size */
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Stronger text shadow */
+        }
+
+        .search-filter-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 0 30px;
+            margin-bottom: 20px;
+        }
+
+        .search-bar {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px 40px 10px 15px;
+            border: 1px solid #ccc; /* Subtle border */
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease; /* Smooth transition */
+        }
+
+        .search-bar i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #95a5a6;
+        }
+
+        .search-bar input:focus {
+            border-color: #2980b9; /* Highlight border on focus */
+            outline: none; /* Remove default outline */
+        }
+
+        .category-filter {
+            flex: 0 0 200px;
+        }
+
+        .product-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 30px;
+        }
+
+        .product-card {
+            border: 1px solid #e0e0e0; /* Add border for definition */
+            border-radius: 15px;
+            overflow: hidden;
+            text-align: left;
+            background-color: white;
+            transition: none; /* Remove transition effects */
+            padding: 15px;
+            box-shadow: none; /* Remove enhanced shadow on hover */
+            cursor: pointer;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: none; /* Remove hover lift effect */
+            box-shadow: none; /* Remove enhanced shadow on hover */
+            border: 1px solid transparent; /* Remove border on hover */
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .product-details {
+            padding: 10px 5px;
+        }
+
+        .product-details h5 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 12px;
+        }
+
+        .product-details p {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            color: #34495e;
+        }
+
+        .product-details .price {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2980b9;
+        }
+
+        .product-details .mrp {
+            font-size: 0.9rem;
+            color: #95a5a6;
+            margin-left: 8px;
+        }
+
+        .product-details .stock-status {
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 8px;
+        }
+
+        .stock-status.in-stock {
+            background-color: #e8f5e9; /* Soft green for in-stock */
+            color: #2e7d32;
+        }
+
+        .stock-status.out-of-stock {
+            background-color: #ffebee; /* Soft red for out-of-stock */
+            color: #c62828;
+        }
+
+        /* Modal Styles */
+        .modal-image-section img {
+            width: 100%;
+            height: auto;
+            max-height: 450px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .thumbnail-images {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .thumbnail-images img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .thumbnail-images img:hover {
+            border-color: #3498db;
+            transform: scale(1.05);
+        }
+
+        .modal-body {
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 25px;
+        }
+
+        .modal-details-section {
+            margin-top: 25px;
+            padding: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .details {
+            flex-grow: 1;
+            margin-right: 25px;
+        }
+
+        .price-button-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-buy {
+            background: #007bff; /* Updated button color */
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px; /* More rounded corners */
+            font-weight: 600;
+            transition: background 0.3s ease, transform 0.2s ease; /* Smooth transition */
+        }
+
+        .btn-buy:hover {
+            background: #0056b3; /* Darker shade on hover */
+            transform: scale(1.05); /* Slightly enlarge on hover */
+        }
+
+        .btn-buy:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        /* Loader Styles */
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 8px solid #3498db;
+            width: 60px;
+            height: 60px;
+            animation: spin 2s linear infinite;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            z-index: 9999; /* Ensure it appears above other elements */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Additional Modal Styles */
+        .modal-title {
+            font-size: 2rem; /* Increased modal title size */
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .modal-details-section h4 {
+            font-size: 1.5rem; /* Increased size for better hierarchy */
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .modal-details-section p {
+            font-size: 1rem;
+            color: #34495e;
+            line-height: 1.8; /* Improved line height for readability */
+        }
+
+        .modal-details-section .text-muted {
+            font-size: 0.9rem;
+            color: #95a5a6;
+        }
+
+        .modal-details-section .text-primary {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #2980b9;
+        }
+
+        .modal-details-section .price-button-container {
+            background-color: #e2f3f1;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+           
+        }
+
+        .modal-details-section .btn-buy {
+            background: linear-gradient(45deg, #2980b9, #3498db);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        /* .modal-details-section .btn-buy:hover {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            transform: translateY(-2px);
+        } */
+
+        .modal-details-section .btn-buy:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        /* Non-responsive styles */
+        @media (max-width: 768px) {
+            .header-section h1 {
+                font-size: 2.5rem; /* Adjusted for smaller screens */
+            }
+
+            .search-filter-container {
+                padding: 0 15px;
+                margin-bottom: 10px;
+            }
+
+            .search-bar, .category-filter {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .product-container {
+                padding: 15px;
+            }
+
+            .product-card {
+                margin-bottom: 15px;
+                padding: 10px;
+            }
+
+            .product-card img {
+                height: 200px;
+                margin-bottom: 10px;
+            }
+
+            .product-details h5 {
+                font-size: 1rem;
+                margin-bottom: 8px;
+            }
+
+            .product-details .price {
+                font-size: 1rem;
+            }
+
+            .product-details .mrp {
+                font-size: 0.8rem;
+            }
+
+            .product-details .stock-status {
+                font-size: 0.8rem;
+                padding: 2px 8px;
+                margin-top: 0;
+                margin-left: auto;
+            }
+
+            .modal-body {
+                padding: 15px;
+            }
+
+            .modal-details-section {
+                padding: 15px;
+            }
+
+            .price-button-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .price-button-container div {
+                margin-bottom: 10px;
+            }
+
+            .btn-buy {
+                width: 100%;
+                text-align: center;
+            }
+
+            .loader {
+                width: 40px; /* Smaller size for mobile */
+                height: 40px; /* Smaller size for mobile */
+                top: 45%;
+                left: 43%;
+            }
+
+            .carousel-control-prev,
+            .carousel-control-next {
+                display: none; /* Hide arrows on mobile */
+            }
+
+            .banner .overlay h2 {
+                font-size: 6vw; /* Adjusted for smaller screens */
+            }
+
+            .banner .overlay p {
+                font-size: 5vw; /* Adjusted for smaller screens */
+            }
+        }
+
+        .banner {
+            position: relative; /* Position relative for absolute positioning of overlay */
+            background-color: #2980b9;
+            color: white;
+            margin-bottom: 30px;
+            overflow: hidden; /* Prevent overflow */
+            width: 100%; /* Fixed width */
+            height: 400px; /* Fixed height */
+            margin-left: auto; /* Center the banner */
+            margin-right: auto; /* Center the banner */
+            border-radius: 10px; /* Rounded corners for the banner */
+        }
+
+        .banner img {
+            width: 100%; /* Make the image responsive */
+            height: 100%; /* Set height to fill the banner */
+            object-fit: cover; /* Cover the area without distortion */
+            filter: brightness(0.8); /* Darken banner images slightly */
+        }
+
+        .banner .overlay {
+            position: absolute; /* Position overlay */
+            top: 50%; /* Center vertically */
+            left: 50%; /* Center horizontally */
+            transform: translate(-50%, -50%); /* Adjust for centering */
+            text-align: center; /* Center text */
+            color: white; /* Text color */
+            background-color: rgba(0, 0, 0, 0.6); /* Darker overlay for better text contrast */
+            padding: 20px; /* Padding for the overlay */
+            border-radius: 10px; /* Rounded corners */
+        }
+
+        .banner .overlay h2 {
+            font-size: 3vw; /* Responsive font size */
+            margin: 0; /* Remove default margin */
+        }
+
+        .banner .overlay p {
+            font-size: 2vw; /* Responsive font size */
+            margin: 10px 0; /* Margin for spacing */
+        }
+
+        @media (max-width: 768px) {
+            .banner {
+                height: 250px; /* Adjust height for smaller screens */
+            }
+
+            .banner .overlay h2 {
+                font-size: 6vw; /* Adjust font size for smaller screens */
+            }
+
+            .banner .overlay p {
+                font-size: 5vw; /* Adjust font size for smaller screens */
+            }
+        }
+
+        /* Featured Products Carousel Controls */
+        .carousel-control-prev,
+        .carousel-control-next {
+            width: 5%; /* Increase the width for better click area */
+            opacity: 1; /* Ensure they are fully visible */
+        }
+
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-color: rgba(13, 6, 6, 0.8); /* White background for better contrast */
+            border-radius: 50%; /* Rounded shape */
+            padding: 10px; /* Padding for a larger clickable area */
+        }
+
+        .carousel-control-prev:hover,
+        .carousel-control-next:hover {
+            background-color: rgba(0, 0, 0, 0.1); /* Slight darkening on hover */
+        }
+
+        #paginationControls .btn {
+            font-weight: 600; /* Make the button text bold */
+            padding: 10px 20px; /* Increase padding for a larger button */
+            border-radius: 25px; /* More rounded corners */
+            transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+        }
+
+        #paginationControls .btn:hover {
+            background-color: #0056b3; /* Darker shade on hover */
+            color: white; /* Ensure text remains white on hover */
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #f8f9fa; /* Light background for the footer */
+            padding: 40px 0; /* Padding for spacing */
+            color: #343a40; /* Dark text color */
+        }
+
+        footer h5 {
+            font-size: 1.25rem; /* Font size for footer headings */
+            margin-bottom: 20px; /* Space below headings */
+            font-weight: 600; /* Bold headings */
+        }
+
+        footer p {
+            margin-bottom: 10px; /* Space below paragraphs */
+            line-height: 1.5; /* Improved line height for readability */
+        }
+
+        footer a {
+            color: #007bff; /* Link color */
+            text-decoration: none; /* Remove underline */
+            transition: color 0.3s; /* Smooth transition for hover effect */
+        }
+
+        footer a:hover {
+            color: #0056b3; /* Darker shade on hover */
+            text-decoration: underline; /* Underline on hover */
+        }
+
+        .footer-bottom {
+            background-color: #e9ecef; /* Background for the bottom section */
+            padding: 10px 0; /* Padding for spacing */
+            color: #6c757d; /* Lighter text color */
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">Aitam-Olx</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Banner Section -->
+    <div id="bannerCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="/assets/images/banner1.jpg" class="d-block w-100" alt="Banner 1">
+            </div>
+            <div class="carousel-item">
+                <img src="/assets/images/banner2.jpg" class="d-block w-100" alt="Banner 2">
+            </div>
+            <div class="carousel-item">
+                <img src="/assets/images/banner3.jpg" class="d-block w-100" alt="Banner 3">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <!-- Featured Products Section -->
+    <div class="container my-5">
+        <h2 class="text-center my-4">Featured Products</h2>
+        <div id="featuredProductsCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000" data-bs-pause="hover">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="row">
+                        <div class="col-6 col-md-3">
+                            <div class="product-card">
+                                <img src="/assets/images/product1.jpg" alt="Product 1">
+                                <div class="product-details">
+                                    <h5>Product 1</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="product-card">
+                                <img src="https://m.media-amazon.com/images/I/41UwiqzW6eL._SX300_SY300_QL70_FMwebp_.jpg" alt="Product 2">
+                                <div class="product-details">
+                                    <h5>Product 2</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="product-card">
+                                <img src="https://m.media-amazon.com/images/I/41hH9UEyWeL._SX342_SY445_QL70_FMwebp_.jpg" alt="Product 3">
+                                <div class="product-details">
+                                    <h5>Product 3</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="product-card">
+                                <img src="/assets/images/product4.jpg" alt="Product 4">
+                                <div class="product-details">
+                                    <h5>Product 4</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-6 col-md-3">
+                            <div class="product-card">
+                                <img src="/assets/images/product5.jpg" alt="Product 5">
+                                <div class="product-details">
+                                    <h5>Product 5</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="product-card">
+                                <img src="/assets/images/product6.jpg" alt="Product 6">
+                                <div class="product-details">
+                                    <h5>Product 6</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="product-card">
+                                <img src="/assets/images/product7.jpg" alt="Product 7">
+                                <div class="product-details">
+                                    <h5>Product 7</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="product-card">
+                                <img src="/assets/images/product8.jpg" alt="Product 8">
+                                <div class="product-details">
+                                    <h5>Product 8</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-6 col-md-3">
+                            <div class="product-card">
+                                <img src="/assets/images/product9.jpg" alt="Product 9">
+                                <div class="product-details">
+                                    <h5>Product 9</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="product-card">
+                                <img src="/assets/images/product10.jpg" alt="Product 10">
+                                <div class="product-details">
+                                    <h5>Product 10</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="product-card">
+                                <img src="/assets/images/product11.jpg" alt="Product 11">
+                                <div class="product-details">
+                                    <h5>Product 11</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="product-card">
+                                <img src="/assets/images/product12.jpg" alt="Product 12">
+                                <div class="product-details">
+                                    <h5>Product 12</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#featuredProductsCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#featuredProductsCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
+    <h2 class="text-center my-4">All Products</h2>
+
+    <div class="container">
+        <div class="search-filter-container">
+            <div class="category-filter">
+                <select id="categoryFilter" class="form-select">
+                    <option value="all">All Categories</option>
+                    <option value="test">Test</option>
+                    <option value="biotechnology">Biotechnology</option>
+                    <option value="consulting">Consulting</option>
+                    <option value="engineering">Engineering</option>
+                </select>
+            </div>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search products...">
+                <i class="fas fa-search"></i>
+            </div>
+        </div>
+        
+        <div class="product-container" id="productContainer">
+            <!-- Product Cards will be dynamically generated here -->
+        </div>
+        <div class="loader" id="loader"></div>
+
+        <!-- Pagination Controls -->
+        <div id="paginationControls" class="d-flex justify-content-center my-4">
+            <button id="prevPage" class="btn btn-primary me-2" disabled>
+                <i class="fas fa-chevron-left"></i> Previous
+            </button>
+            <span id="pageInfo" class="mx-3">Page 1</span>
+            <button id="nextPage" class="btn btn-primary ms-2">
+                Next <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Rest of the code remains the same -->
+    <!-- Modified Modal Structure -->
+    <div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-image-section">
+                        <img id="mainImage" src="" alt="">
+                    </div>
+                    <div class="thumbnail-images" id="thumbnailImages">
+                        <!-- Thumbnail images will be inserted here -->
+                    </div>
+                    <div class="modal-details-section">
+                        <div class="details">
+                            <!-- Details will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add JavaScript for Modal and Filtering -->
+    <script>
+        let productData = [];
+        let isFirstFetch = true;
+        let isSearching = false; // Track if a search is active
+        let currentPage = 1;
+        const productsPerPage = 8; // Number of products to display per page
+
+        async function fetchProductData() {
+            const loader = document.getElementById('loader');
+            if (isFirstFetch) {
+                loader.style.display = 'block';
+            }
+            try {
+                const response = await fetch('/api/products');
+                const data = await response.json();
+                console.log('Fetched data:', data); // Debugging log
+                productData = data;
+                if (!isSearching) { // Only render if not searching
+                    renderProductCards(data);
+                }
+            } catch (error) {
+                console.error('Error fetching product data:', error); // Error handling
+            } finally {
+                if (isFirstFetch) {
+                    loader.style.display = 'none';
+                    isFirstFetch = false;
+                }
+            }
+        }
+
+        // New polling function to continuously fetch product data
+        function startPolling() {
+            fetchProductData(); // Initial fetch
+            setInterval(fetchProductData, 30000); // Fetch every 30 seconds
+        }
+
+        function renderProductCards(data) {
+            const container = document.getElementById('productContainer');
+            container.innerHTML = ''; // Clear existing cards
+
+            const startIndex = (currentPage - 1) * productsPerPage;
+            const endIndex = startIndex + productsPerPage;
+            const paginatedData = data.slice(startIndex, endIndex);
+
+            paginatedData.forEach((product, index) => {
+                const stockStatus = product.stock > 0 ? 'In Stock' : 'Out of Stock';
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <a onclick="showProductDetails(${index})" style="text-decoration: none; color: inherit;">
+                        <img src="${product.images[0]}" alt="${product.name}">
+                        <div class="product-details">
+                            <h5>${product.name}</h5>
+                            <div class="d-flex align-items-center">
+                                <span class="price">₹${product.price}</span>
+                                <span class="mrp"><del>${product.mrp}</del></span>
+                                <span class="stock-status ${stockStatus === 'In Stock' ? 'in-stock' : 'out-of-stock'}" style="margin-left: auto;">
+                                    ${stockStatus} ${product.stock > 0 ? `( ${product.stock} left )` : ''}
+                                </span> 
+                            </div>
+                        </div>
+                    </a>
+                `;
+                container.appendChild(card);
+            });
+
+            // Update pagination controls
+            document.getElementById('pageInfo').textContent = `Page ${currentPage}`;
+            document.getElementById('prevPage').disabled = currentPage === 1;
+            document.getElementById('nextPage').disabled = endIndex >= data.length;
+        }
+
+        function showProductDetails(index) {
+            const product = productData[index];
+            const modal = new bootstrap.Modal(document.getElementById('productModal'));
+            const modalTitle = document.querySelector('#productModal .modal-title');
+            const mainImage = document.getElementById('mainImage');
+            const thumbnailImages = document.getElementById('thumbnailImages');
+            const modalDetailsSection = document.querySelector('#productModal .details');
+            const stockStatus = product.stock > 0 ? 'In Stock' : 'Out of Stock';
+
+            modalTitle.textContent = product.name;
+            mainImage.src = product.images[0];
+            thumbnailImages.innerHTML = product.images.map((img, i) => `
+                <img src="${img}" alt="${product.name} thumbnail" onclick="changeMainImage('${img}')">
+            `).join('');
+            modalDetailsSection.innerHTML = `
+                <h4 class="mb-3">${product.name}</h4>
+                <p class="text-muted mb-2">Product ID: <span style="font-weight: bold; color: red;">${product.id}</span></p>
+                <p class="mb-3">${product.description}</p>
+                <div class="price-button-container">
+                    <div>
+                        <h5 class="mb-2">Price: <strong class="text-primary">${product.price}</strong></h5>
+                        <p class="text-muted mb-1"><del>MRP: ${product.mrp}</del></p>
+                        <span class="stock-status ${stockStatus === 'In Stock' ? 'in-stock' : 'out-of-stock'}">
+                            ${stockStatus} ${product.stock > 0 ? `( ${product.stock} left )` : ''}
+                        </span>
+                    </div>
+                    <a style="text-decoration: none; color: inherit;" href="https://wa.me/917816072525?text=I%20am%20interested%20in%20purchasing%20product%20ID%20${product.id}" class="btn-buy" ${product.stock === 0 ? 'style="pointer-events: none; opacity: 0.6;"' : ''}>
+                        ${product.stock > 0 ? 'Buy' : 'Out of Stock'}
+                    </a>
+                </div>
+            `;
+
+            modal.show();
+        }
+
+        function changeMainImage(imgSrc) {
+            const mainImage = document.getElementById('mainImage');
+            mainImage.src = imgSrc;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            startPolling(); // Start polling for product data
+
+            document.getElementById('categoryFilter').addEventListener('change', function() {
+                const selectedCategory = this.value;
+                const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+                filterProducts(selectedCategory, searchTerm);
+            });
+
+            document.getElementById('searchInput').addEventListener('input', function() {
+                isSearching = true; // Set searching to true
+                const selectedCategory = document.getElementById('categoryFilter').value;
+                const searchTerm = this.value.toLowerCase();
+                filterProducts(selectedCategory, searchTerm);
+            });
+
+            // Reset searching flag when search input is cleared
+            document.getElementById('searchInput').addEventListener('blur', function() {
+                if (this.value === '') {
+                    isSearching = false; // Reset searching flag
+                    renderProductCards(productData); // Render all products
+                }
+            });
+
+            document.getElementById('prevPage').addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderProductCards(productData);
+                    scrollToProducts(); // Scroll to the products section
+                }
+            });
+
+            document.getElementById('nextPage').addEventListener('click', () => {
+                if ((currentPage * productsPerPage) < productData.length) {
+                    currentPage++;
+                    renderProductCards(productData);
+                    scrollToProducts(); // Scroll to the products section
+                }
+            });
+        });
+
+        function filterProducts(category, searchTerm) {
+            let filteredData = productData;
+            
+            if (category !== 'all') {
+                filteredData = filteredData.filter(product => product.category === category);
+            }
+            
+            if (searchTerm) {
+                filteredData = filteredData.filter(product => 
+                    product.name.toLowerCase().includes(searchTerm) ||
+                    product.description.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            renderProductCards(filteredData);
+        }
+
+        function scrollToProducts() {
+            const productContainer = document.getElementById('productContainer');
+            productContainer.scrollIntoView({ behavior: 'smooth' }); // Smooth scroll to the product container
+        }
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Footer Section -->
+    <footer class="bg-light text-center text-lg-start mt-5">
+        <div class="container p-4">
+            <div class="row">
+                <div class="col-lg-4 col-md-12 mb-4">
+                    <h5 class="text-uppercase">About Us</h5>
+                    <p>
+                        Aitam-Olx is your go-to platform for the best products in various categories. We strive to provide quality and value to our customers.
+                    </p>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h5 class="text-uppercase">Contact Us</h5>
+                    <p>Email: support@aitam-olx.com</p>
+                    <p>Phone: +1 234 567 890</p>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h5 class="text-uppercase">Follow Us</h5>
+                    <a href="#" class="text-dark"><i class="fab fa-facebook-f"></i> Facebook</a><br>
+                    <a href="#" class="text-dark"><i class="fab fa-twitter"></i> Twitter</a><br>
+                    <a href="#" class="text-dark"><i class="fab fa-instagram"></i> Instagram</a>
+                </div>
+            </div>
+        </div>
+        <div class="text-center p-3" style="background-color: #e9ecef;">
+            © 2023 Aitam-Olx. All rights reserved.
+        </div>
+    </footer>
+</body>
+</html>
