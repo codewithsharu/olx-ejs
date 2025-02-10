@@ -809,7 +809,7 @@
                 const card = document.createElement('div');
                 card.className = 'product-card';
                 card.innerHTML = `
-                    <a onclick="showProductDetails(${index})" style="text-decoration: none; color: inherit;">
+                    <a onclick="showProductDetails(${startIndex + index})" style="text-decoration: none; color: inherit;">
                         <img src="${product.images[0]}" alt="${product.name}">
                         <div class="product-details">
                             <h5>${product.name}</h5>
