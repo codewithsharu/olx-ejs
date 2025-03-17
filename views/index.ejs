@@ -809,7 +809,7 @@
                 const card = document.createElement('div');
                 card.className = 'product-card';
                 card.innerHTML = `
-                    <a onclick="showProductDetails(${startIndex + index})" style="text-decoration: none; color: inherit;">
+                    <a href="#" data-product-index="${startIndex + index}" style="text-decoration: none; color: inherit;">
                         <img src="${product.images[0]}" alt="${product.name}">
                         <div class="product-details">
                             <h5>${product.name}</h5>
@@ -824,6 +824,14 @@
                     </a>
                 `;
                 container.appendChild(card);
+
+                // Add click event listener
+                const link = card.querySelector('a');
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const productIndex = parseInt(e.currentTarget.dataset.productIndex);
+                    showProductDetails(productIndex, data);
+                });
             });
 
             // Update pagination controls
@@ -832,8 +840,8 @@
             document.getElementById('nextPage').disabled = endIndex >= data.length;
         }
 
-        function showProductDetails(index) {
-            const product = productData[index];
+        function showProductDetails(index, currentData) {
+            const product = currentData[index];
             const modal = new bootstrap.Modal(document.getElementById('productModal'));
             const modalTitle = document.querySelector('#productModal .modal-title');
             const mainImage = document.getElementById('mainImage');
