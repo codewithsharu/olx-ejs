@@ -18,7 +18,7 @@
 
 <div class="container">
     <h2 class="text-center mb-4">Add New Product</h2>
-    <form id="productForm" action="/products" method="POST">
+    <form id="productForm" action="/products" method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label for="id">Product ID:</label>
             <input type="text" class="form-control" id="id" name="id" value="<%= productId %>" readonly>
@@ -30,23 +30,8 @@
         </div>
 
         <div class="form-group">
-            <label for="image1">Image URL 1:</label>
-            <input type="url" class="form-control" id="image1" name="images" required>
-        </div>
-
-        <div class="form-group">
-            <label for="image2">Image URL 2:</label>
-            <input type="url" class="form-control" id="image2" name="images" required>
-        </div>
-
-        <div class="form-group">
-            <label for="image3">Image URL 3:</label>
-            <input type="url" class="form-control" id="image3" name="images" required>
-        </div>
-
-        <div class="form-group">
-            <label for="image4">Image URL 4:</label>
-            <input type="url" class="form-control" id="image4" name="images" required>
+            <label for="images">Image URLs:</label>
+            <input type="file" class="form-control" id="images" name="images" accept="image/*" multiple required>
         </div>
 
         <div class="form-group">

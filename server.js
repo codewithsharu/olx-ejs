@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
-
+const multer = require('multer'); // Import multer
 
 dotenv.config();
 
@@ -20,6 +20,19 @@ app.set('view engine', 'ejs'); // Set EJS as the view engine
 app.set('views', path.join(__dirname, 'views')); // Set views directory
 app.use(express.static(path.join(__dirname, 'public')));
 console.log('Serving static files from:', path.join(__dirname, 'public'));
+
+// Set up storage for Multer
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'public/uploads/'); // Directory to save uploaded files
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname)); // Append timestamp to filename
+    }
+});
+
+const upload = multer({ storage }); // Initialize multer with storage settings
+
 // Connect to MongoDB
 mongoose.connect('mongodb+srv://shareenpan2:Fgouter55@cluster0.s3dpu.mongodb.net/olx?retryWrites=true&w=majority&appName=Cluster0', {
     useNewUrlParser: true,
@@ -35,7 +48,9 @@ const productSchema = new mongoose.Schema({
     mrp: Number,
     category: String,
     description: String,
-    stock: Number
+    stock: Number,
+    status: String,
+    payment: String
 });
 
 const Product = mongoose.model('Product', productSchema);
@@ -66,22 +81,18 @@ app.get('/add-product', (req, res) => {
     res.render('addProduct', { productId });
 });
 
-// Function to generate a random product ID
-function generateProductId() {
-    const randomNum = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
-    return `PRO${String(randomNum).padStart(3, '0')}`; // Format as PRO001, PRO002, etc.
-}
-
-// Route to handle form submission
-app.post('/products', async (req, res) => {
+// Route to handle form submission with image upload
+app.post('/products', upload.array('images', 4), async (req, res) => {
     try {
-        const { name, images, price, mrp, category, description, stock, status, payment } = req.body;
+        const { name, price, mrp, category, description, stock, status, payment } = req.body;
+        const images = req.files.map(file => `/uploads/${file.filename}`); // Get uploaded image paths
+
         const productId = parseInt(req.body.id.replace('PRO', '')); // Convert to Number by removing "PRO"
         
         const product = new Product({
             id: productId, // Use the numeric ID
             name,
-            images: [req.body.images[0], req.body.images[1], req.body.images[2], req.body.images[3]], // Collecting image URLs
+            images, // Use the uploaded image paths
             price,
             mrp,
             category,
@@ -96,6 +107,12 @@ app.post('/products', async (req, res) => {
         res.status(500).send('Error adding product: ' + error.message);
     }
 });
+
+// Function to generate a random product ID
+function generateProductId() {
+    const randomNum = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
+    return `PRO${String(randomNum).padStart(3, '0')}`; // Format as PRO001, PRO002, etc.
+}
 
 // Start the server
 app.listen(PORT, () => {
