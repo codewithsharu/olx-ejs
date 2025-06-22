@@ -50,7 +50,11 @@ const productSchema = new mongoose.Schema({
     description: String,
     stock: Number,
     status: String,
-    payment: String
+    payment: String,
+    buildQuality: Number,
+    scratches: Number,
+    daysBuying: Number,
+    minorProblems: Number
 });
 
 const Product = mongoose.model('Product', productSchema);
@@ -90,16 +94,20 @@ app.post('/products', upload.array('images', 4), async (req, res) => {
         const productId = parseInt(req.body.id.replace('PRO', '')); // Convert to Number by removing "PRO"
         
         const product = new Product({
-            id: productId, // Use the numeric ID
+            id: productId,
             name,
-            images, // Use the uploaded image paths
+            images,
             price,
             mrp,
             category,
             description,
             stock,
             status,
-            payment
+            payment,
+            buildQuality: parseInt(req.body.buildQuality), // Convert to Number
+            scratches: parseInt(req.body.scratches), // Convert to Number
+            daysBuying: parseInt(req.body.daysBuying), // Convert to Number
+            minorProblems: parseInt(req.body.minorProblems) // Convert to Number
         });
         await product.save();
         res.status(201).send('Product added successfully!');
@@ -113,6 +121,17 @@ function generateProductId() {
     const randomNum = Math.floor(Math.random() * 1000) + 1; // Random number between 1 and 1000
     return `PRO${String(randomNum).padStart(3, '0')}`; // Format as PRO001, PRO002, etc.
 }
+
+// Test route to check if products are being sent
+app.get('/test-products', async (req, res) => {
+    try {
+        const products = await Product.find(); // Fetch products from the database
+        res.json(products); // Send products as JSON response
+    } catch (error) {
+        console.error('Error fetching products:', error); // Log the error for debugging
+        res.status(500).send('Error fetching products');
+    }
+});
 
 // Start the server
 app.listen(PORT, () => {

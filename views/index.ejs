@@ -858,6 +858,34 @@
                 <h4 class="mb-3">${product.name}</h4>
                 <p class="text-muted mb-2">Product ID: <span style="font-weight: bold; color: red;">${product.id}</span></p>
                 <p class="mb-3">${product.description}</p>
+                <table class="table table-borderless mb-2" style="width: auto;">
+                    <tbody>
+                        <tr style="border: 1px solid #dee2e6;">
+                            <th style="padding-right: 16px; border: 1px solid #dee2e6;">Build Quality</th>
+                            <td style="border: 1px solid #dee2e6;">
+                                ${[1,2,3,4,5].map(i => `<i class="fa${i <= product.buildQuality ? 's' : 'r'} fa-star" style="color: #ffc107;"></i>`).join('')}
+                            </td>
+                        </tr>
+                        <tr style="border: 1px solid #dee2e6;">
+                            <th style="padding-right: 16px; border: 1px solid #dee2e6;">Scratches</th>
+                            <td style="border: 1px solid #dee2e6;">
+                                ${[1,2,3,4,5].map(i => `<i class="fa${i <= product.scratches ? 's' : 'r'} fa-star" style="color: #ffc107;"></i>`).join('')}
+                            </td>
+                        </tr>
+                        <tr style="border: 1px solid #dee2e6;">
+                            <th style="padding-right: 16px; border: 1px solid #dee2e6;">Days Buying</th>
+                            <td style="border: 1px solid #dee2e6;">
+                                ${[1,2,3,4,5].map(i => `<i class="fa${i <= product.daysBuying ? 's' : 'r'} fa-star" style="color: #ffc107;"></i>`).join('')}
+                            </td>
+                        </tr>
+                        <tr style="border: 1px solid #dee2e6;">
+                            <th style="padding-right: 16px; border: 1px solid #dee2e6;">Minor Problems</th>
+                            <td style="border: 1px solid #dee2e6;">
+                                ${[1,2,3,4,5].map(i => `<i class="fa${i <= product.minorProblems ? 's' : 'r'} fa-star" style="color: #ffc107;"></i>`).join('')}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
                 <div class="price-button-container">
                     <div>
                         <h5 class="mb-2">Price: <strong class="text-primary">${product.price}</strong></h5>
@@ -866,7 +894,7 @@
                             ${stockStatus} ${product.stock > 0 ? `( ${product.stock} left )` : ''}
                         </span>
                     </div>
-                    <a style="text-decoration: none; color: inherit;" href="https://wa.me/917816072525?text=I%20am%20interested%20in%20purchasing%20product%20ID%20${product.id}" class="btn-buy" ${product.stock === 0 ? 'style="pointer-events: none; opacity: 0.6;"' : ''}>
+                    <a style="text-decoration: none; color: inherit;" href="https://wa.me/917093740925?text=I%20am%20interested%20in%20purchasing%20product%20ID%20${product.id}" class="btn-buy" ${product.stock === 0 ? 'style="pointer-events: none; opacity: 0.6;"' : ''}>
                         ${product.stock > 0 ? 'Buy' : 'Out of Stock'}
                     </a>
                 </div>
